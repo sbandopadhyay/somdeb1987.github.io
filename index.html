@@ -272,14 +272,14 @@
                     <div class="location">Tainan, Taiwan</div>
                 </div>
                 <div class="status">🚧 Full website coming soon</div>
-                <!-- Enhanced Flag Counter -->
+                <!-- Enhanced Visitor Counter with ClustrMaps -->
                 <div class="flag-counter" role="region" aria-label="Global visitor counter">
                     <div class="counter-title">Visitors from around the world</div>
                     <div class="flag-counter-wrapper" id="flag-counter-wrapper" style="display: none;">
-                        <a href="https://s11.flagcounter.com/more/wvd/" target="_blank" rel="noopener noreferrer" aria-label="View detailed visitor statistics">
-                            <img id="flag-counter-img" 
-                                 src="https://s11.flagcounter.com/count/wvd/bg_1E1E2E/txt_E8E8E8/border_2D2D44/columns_2/maxflags_10/viewers_0/labels_0/pageviews_1/flags_1/percent_0/" 
-                                 alt="Global visitor flag counter" 
+                        <a href="https://clustrmaps.com/site/1c3y4" target="_blank" rel="noopener noreferrer" aria-label="View detailed visitor statistics">
+                            <img id="clustrmaps-img" 
+                                 src="https://clustrmaps.com/map_v2.png?cl=1e1e2e&t=n&d=your-unique-id&co=2d2d44" 
+                                 alt="Global visitor counter by ClustrMaps" 
                                  loading="lazy">
                         </a>
                     </div>
@@ -294,29 +294,29 @@
         © 2025 Somdeb Bandopadhyay · All Rights Reserved
     </footer>
     <script>
-        // Robust FlagCounter handling with cache-buster and debug logging
+        // Robust ClustrMaps handling with cache-buster and debug logging
         (function() {
             const wrapper = document.getElementById('flag-counter-wrapper');
-            const img = document.getElementById('flag-counter-img');
+            const img = document.getElementById('clustrmaps-img');
             const fallback = document.getElementById('flag-counter-fallback');
 
             // Add cache-buster to ensure fresh image load
             const cacheBuster = new Date().getTime();
-            img.src = img.src + '?cb=' + cacheBuster;
+            img.src = img.src + '&cb=' + cacheBuster;
 
             // Log for debugging
-            console.log('FlagCounter: Initializing with URL:', img.src);
+            console.log('ClustrMaps: Initializing with URL:', img.src);
 
             // Handle image load (including cached images)
             function showCounter() {
-                console.log('FlagCounter: Image loaded successfully, width:', img.naturalWidth);
+                console.log('ClustrMaps: Image loaded successfully, width:', img.naturalWidth);
                 wrapper.style.display = 'inline-block';
                 fallback.style.display = 'none';
             }
 
             // Check if image is already loaded (cached)
             if (img.complete && img.naturalWidth !== 0) {
-                console.log('FlagCounter: Image already loaded (cached), width:', img.naturalWidth);
+                console.log('ClustrMaps: Image already loaded (cached), width:', img.naturalWidth);
                 showCounter();
             } else {
                 // Handle successful load
@@ -326,7 +326,7 @@
 
                 // Handle errors (e.g., ad blockers, network issues)
                 img.addEventListener('error', function() {
-                    console.log('FlagCounter: Image failed to load (blocked or error)');
+                    console.log('ClustrMaps: Image failed to load (blocked or error)');
                     wrapper.style.display = 'none';
                     fallback.style.display = 'block';
                 }, { once: true });
