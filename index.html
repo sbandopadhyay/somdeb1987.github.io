@@ -1,4 +1,43 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -275,16 +314,16 @@
                 <!-- Enhanced Flag Counter -->
                 <div class="flag-counter" role="region" aria-label="Global visitor counter">
                     <div class="counter-title">Visitors from around the world</div>
-                    <div class="flag-counter-wrapper" id="flag-counter-wrapper">
+                    <div class="flag-counter-wrapper" id="flag-counter-wrapper" style="display: none;">
                         <a href="https://s01.flagcounter.com/more/wvd/" target="_blank" rel="noopener noreferrer" aria-label="View detailed visitor statistics">
                             <img id="flag-counter-img" 
-                                 src="https://s01.flagcounter.com/count2/wvd/bg_1E1E2E/txt_E8E8E8/border_2D2D44/columns_8/maxflags_24/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" 
+                                 src="https://s01.flagcounter.com/count2/wvd/bg_1E1E2E/txt_E8E8E8/border_2D2D44/columns_8/maxflags_24/viewers_0/labels_1/pageviews_1/flags_1/percent_0/" 
                                  alt="Global visitor flag counter" 
                                  loading="lazy">
                         </a>
                     </div>
-                    <div class="flag-counter-fallback" id="flag-counter-fallback" style="display: none;">
-                        No visitors recorded yet. Check back soon!
+                    <div class="flag-counter-fallback" id="flag-counter-fallback">
+                        No visitors recorded yet or counter blocked. Check back soon!
                     </div>
                 </div>
             </div>
@@ -294,29 +333,35 @@
         © 2025 Somdeb Bandopadhyay · All Rights Reserved
     </footer>
     <script>
-        // Check if FlagCounter has recorded any visits
+        // Robust FlagCounter handling with cache-buster
         (function() {
-            const img = document.getElementById('flag-counter-img');
             const wrapper = document.getElementById('flag-counter-wrapper');
+            const img = document.getElementById('flag-counter-img');
             const fallback = document.getElementById('flag-counter-fallback');
 
-            img.addEventListener('load', function() {
-                // Check if the image is a blank or default image (indicating no visits)
-                // FlagCounter returns a small image if no visits are recorded
-                if (img.naturalWidth < 100) { // Approximate threshold for "empty" counter
+            // Add cache-buster to ensure fresh image load
+            const cacheBuster = new Date().getTime();
+            img.src = img.src + '?cb=' + cacheBuster;
+
+            // Handle image load (including cached images)
+            function showCounter() {
+                wrapper.style.display = 'inline-block';
+                fallback.style.display = 'none';
+            }
+
+            // Check if image is already loaded (cached)
+            if (img.complete && img.naturalWidth !== 0) {
+                showCounter();
+            } else {
+                // Handle successful load
+                img.addEventListener('load', showCounter, { once: true });
+
+                // Handle errors (e.g., ad blockers, network issues)
+                img.addEventListener('error', function() {
                     wrapper.style.display = 'none';
                     fallback.style.display = 'block';
-                } else {
-                    wrapper.style.display = 'inline-block';
-                    fallback.style.display = 'none';
-                }
-            });
-
-            img.addEventListener('error', function() {
-                // Handle case where FlagCounter fails to load
-                wrapper.style.display = 'none';
-                fallback.style.display = 'block';
-            });
+                }, { once: true });
+            }
         })();
     </script>
 </body>
