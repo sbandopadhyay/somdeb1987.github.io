@@ -12,7 +12,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Georgia', 'Times New Roman', serif;
             background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
@@ -22,7 +21,6 @@
             align-items: center;
             position: relative;
         }
-
         /* Subtle grid pattern for depth */
         body::before {
             content: '';
@@ -31,13 +29,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
+            background-image:
                 linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 50px 50px;
             pointer-events: none;
         }
-
         .container {
             position: relative;
             z-index: 10;
@@ -45,7 +42,6 @@
             max-width: 1200px;
             animation: fadeIn 1s ease-out;
         }
-
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -56,21 +52,19 @@
                 transform: translateY(0);
             }
         }
-
         .main-card {
             background: rgba(15, 15, 20, 0.5);
             backdrop-filter: blur(12px) saturate(120%);
             -webkit-backdrop-filter: blur(12px) saturate(120%);
             border-radius: 12px;
             padding: 50px 45px;
-            box-shadow: 
+            box-shadow:
                 0 10px 30px rgba(0, 0, 0, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
         }
-
         /* Glass reflection effect */
         .main-card::before {
             content: '';
@@ -79,13 +73,12 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.15) 20%, 
-                rgba(255, 255, 255, 0.15) 80%, 
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.15) 20%,
+                rgba(255, 255, 255, 0.15) 80%,
                 transparent);
         }
-
         h1 {
             font-size: 2.2rem;
             color: #ffffff;
@@ -93,11 +86,9 @@
             font-weight: 400;
             letter-spacing: 0.5px;
         }
-
         .name {
             font-weight: 600;
         }
-
         .subtitle {
             color: #a0a0b0;
             font-size: 1rem;
@@ -105,57 +96,47 @@
             letter-spacing: 1px;
             font-style: italic;
         }
-
         .divider {
             height: 1px;
             background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
             margin: 30px 0;
         }
-
         .content {
             color: #ddd;
             line-height: 1.7;
             font-size: 1.25rem;
         }
-
         .content p {
             margin-bottom: 18px;
         }
-
         .research-focus {
             color: #8ab4f8;
             font-weight: 500;
         }
-
         .field {
             color: #9aa0a6;
             font-style: italic;
         }
-
         .affiliation {
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .position {
             color: #b0b0b0;
             font-size: 0.95rem;
             margin-bottom: 8px;
         }
-
         .institution {
             color: #ffffff;
             font-size: 1.1rem;
             font-weight: 500;
         }
-
         .location {
             color: #888;
             font-size: 0.95rem;
             margin-top: 5px;
         }
-
         .status {
             display: inline-block;
             margin-top: 25px;
@@ -167,7 +148,6 @@
             font-size: 0.9rem;
             letter-spacing: 0.5px;
         }
-
         /* Enhanced Flag Counter Styling */
         .flag-counter {
             margin-top: 40px;
@@ -176,7 +156,6 @@
             text-align: center;
             position: relative;
         }
-
         .flag-counter::before {
             content: '';
             position: absolute;
@@ -185,12 +164,11 @@
             transform: translateX(-50%);
             width: 60px;
             height: 1px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(139, 92, 246, 0.5), 
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(139, 92, 246, 0.5),
                 transparent);
         }
-
         .counter-title {
             color: #9aa0a6;
             font-size: 0.9rem;
@@ -201,7 +179,6 @@
             position: relative;
             display: inline-block;
         }
-
         .counter-title::after {
             content: '🌍';
             position: absolute;
@@ -211,7 +188,6 @@
             font-size: 1rem;
             opacity: 0.7;
         }
-
         .flag-counter-wrapper {
             display: inline-block;
             padding: 15px;
@@ -220,14 +196,12 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
         }
-
         .flag-counter-wrapper:hover {
             background: rgba(255, 255, 255, 0.04);
             border-color: rgba(139, 92, 246, 0.2);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
-
         .flag-counter img {
             opacity: 0.85;
             transition: opacity 0.3s ease;
@@ -236,12 +210,15 @@
             display: block;
             filter: brightness(0.95) contrast(1.1);
         }
-
         .flag-counter a:hover img {
             opacity: 1;
             filter: brightness(1.05) contrast(1.15);
         }
-
+        .flag-counter-fallback {
+            color: #9aa0a6;
+            font-size: 0.95rem;
+            font-style: italic;
+        }
         footer {
             position: fixed;
             bottom: 20px;
@@ -253,30 +230,24 @@
             letter-spacing: 0.5px;
             font-family: 'Arial', sans-serif;
         }
-
         /* Responsive design */
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8rem;
             }
-            
             .main-card {
                 padding: 35px 25px;
             }
-            
             .content {
                 font-size: 1rem;
             }
-
             .flag-counter {
                 margin-top: 30px;
                 padding-top: 25px;
             }
-
             .flag-counter-wrapper {
                 padding: 10px;
             }
-
             .counter-title::after {
                 display: none;
             }
@@ -288,45 +259,65 @@
         <div class="main-card">
             <h1>Welcome to my Homepage</h1>
             <div class="subtitle">--------------------------------------------------------------</div>
-            
             <div class="divider"></div>
-            
             <div class="content">
                 <p>Hello! This webpage is currently under development. I will complete it when time permits.</p>
-				
-				<p>I am <span class="name">Somdeb Bandopadhyay</span> </p>
-				
-				<p>I like to solve <span class="research-focus">PDEs</span> and explore the physical phenomena underlying their solutions.</p>
-				
-				<p>More often than not, these PDES are in the realm of <span class="research-focus">Fluid Mechanics</span>.</p>
-                
+                <p>I am <span class="name">Somdeb Bandopadhyay</span></p>
+                <p>I like to solve <span class="research-focus">PDEs</span> and explore the physical phenomena underlying their solutions.</p>
+                <p>More often than not, these PDEs are in the realm of <span class="research-focus">Fluid Mechanics</span>.</p>
                 <p>Sometimes, these results lead to publication while other times they just remain as notes/manuscript for future works ~</p>
-                
                 <div class="affiliation">
                     <div class="position">Postdoctoral Researcher</div>
                     <div class="institution">National Cheng Kung University (NCKU)</div>
                     <div class="location">Tainan, Taiwan</div>
                 </div>
-
                 <div class="status">🚧 Full website coming soon</div>
-                
                 <!-- Enhanced Flag Counter -->
-                <div class="flag-counter">
+                <div class="flag-counter" role="region" aria-label="Global visitor counter">
                     <div class="counter-title">Visitors from around the world</div>
-                    <div class="flag-counter-wrapper">
-                        <a href="https://s01.flagcounter.com/more/wvd/" target="_blank" rel="noopener noreferrer">
-                            <img src="https://s01.flagcounter.com/count2/wvd/bg_TRANSPARENT/txt_E8E8E8/border_2D2D44/columns_3/maxflags_12/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" 
-                                 alt="Flag Counter" 
+                    <div class="flag-counter-wrapper" id="flag-counter-wrapper">
+                        <a href="https://s01.flagcounter.com/more/wvd/" target="_blank" rel="noopener noreferrer" aria-label="View detailed visitor statistics">
+                            <img id="flag-counter-img" 
+                                 src="https://s01.flagcounter.com/count2/wvd/bg_1E1E2E/txt_E8E8E8/border_2D2D44/columns_8/maxflags_24/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" 
+                                 alt="Global visitor flag counter" 
                                  loading="lazy">
                         </a>
+                    </div>
+                    <div class="flag-counter-fallback" id="flag-counter-fallback" style="display: none;">
+                        No visitors recorded yet. Check back soon!
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <footer>
         © 2025 Somdeb Bandopadhyay · All Rights Reserved
     </footer>
+    <script>
+        // Check if FlagCounter has recorded any visits
+        (function() {
+            const img = document.getElementById('flag-counter-img');
+            const wrapper = document.getElementById('flag-counter-wrapper');
+            const fallback = document.getElementById('flag-counter-fallback');
+
+            img.addEventListener('load', function() {
+                // Check if the image is a blank or default image (indicating no visits)
+                // FlagCounter returns a small image if no visits are recorded
+                if (img.naturalWidth < 100) { // Approximate threshold for "empty" counter
+                    wrapper.style.display = 'none';
+                    fallback.style.display = 'block';
+                } else {
+                    wrapper.style.display = 'inline-block';
+                    fallback.style.display = 'none';
+                }
+            });
+
+            img.addEventListener('error', function() {
+                // Handle case where FlagCounter fails to load
+                wrapper.style.display = 'none';
+                fallback.style.display = 'block';
+            });
+        })();
+    </script>
 </body>
 </html>
