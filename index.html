@@ -148,15 +148,15 @@
             font-size: 0.9rem;
             letter-spacing: 0.5px;
         }
-        /* Enhanced Flag Counter Styling */
-        .flag-counter {
+        /* Enhanced Visitor Counter Styling */
+        .visitor-counter {
             margin-top: 40px;
             padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             position: relative;
         }
-        .flag-counter::before {
+        .visitor-counter::before {
             content: '';
             position: absolute;
             top: 0;
@@ -188,7 +188,7 @@
             font-size: 1rem;
             opacity: 0.7;
         }
-        .flag-counter-wrapper {
+        .visitor-counter-wrapper {
             display: inline-block;
             padding: 15px;
             background: rgba(255, 255, 255, 0.02);
@@ -196,13 +196,13 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
         }
-        .flag-counter-wrapper:hover {
+        .visitor-counter-wrapper:hover {
             background: rgba(255, 255, 255, 0.04);
             border-color: rgba(139, 92, 246, 0.2);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
-        .flag-counter img {
+        .visitor-counter img {
             opacity: 0.85;
             transition: opacity 0.3s ease;
             max-width: 100%;
@@ -210,18 +210,18 @@
             display: block;
             filter: brightness(0.95) contrast(1.1);
         }
-        .flag-counter a:hover img {
+        .visitor-counter a:hover img {
             opacity: 1;
             filter: brightness(1.05) contrast(1.15);
         }
-        .flag-counter-fallback {
+        .visitor-counter-fallback {
             color: #9aa0a6;
             font-size: 0.95rem;
             font-style: italic;
         }
         footer {
-            position: fixed;
-            bottom: 20px;
+            position: relative; /* Adjusted for static flow */
+            margin-top: 2em;
             width: 100%;
             text-align: center;
             color: rgba(255, 255, 255, 0.3);
@@ -241,11 +241,11 @@
             .content {
                 font-size: 1rem;
             }
-            .flag-counter {
+            .visitor-counter {
                 margin-top: 30px;
                 padding-top: 25px;
             }
-            .flag-counter-wrapper {
+            .visitor-counter-wrapper {
                 padding: 10px;
             }
             .counter-title::after {
@@ -273,17 +273,12 @@
                 </div>
                 <div class="status">🚧 Full website coming soon</div>
                 <!-- Enhanced Visitor Counter with ClustrMaps -->
-                <div class="flag-counter" role="region" aria-label="Global visitor counter">
+                <div class="visitor-counter" role="region" aria-label="Global visitor counter">
                     <div class="counter-title">Visitors from around the world</div>
-                    <div class="flag-counter-wrapper" id="flag-counter-wrapper" style="display: none;">
-                        <a href="https://clustrmaps.com/site/1c3y4" target="_blank" rel="noopener noreferrer" aria-label="View detailed visitor statistics">
-                            <img id="clustrmaps-img" 
-                                 src="https://clustrmaps.com/map_v2.png?cl=1e1e2e&t=n&d=your-unique-id&co=2d2d44" 
-                                 alt="Global visitor counter by ClustrMaps" 
-                                 loading="lazy">
-                        </a>
+                    <div class="visitor-counter-wrapper" id="visitor-counter-wrapper">
+                        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=1e1e2e&w=250&t=tt&d=your-unique-id'></script>
                     </div>
-                    <div class="flag-counter-fallback" id="flag-counter-fallback">
+                    <div class="visitor-counter-fallback" id="visitor-counter-fallback" style="display: none;">
                         No visitors recorded yet or counter blocked. Check back soon!
                     </div>
                 </div>
@@ -291,46 +286,58 @@
         </div>
     </div>
     <footer>
-        © 2025 Somdeb Bandopadhyay · All Rights Reserved
+        © 2025 Somdeb Bandopadhyay · All Rights Reserved<br>
+        <small>Visitor tracking via ClustrMaps (IP geolocation only; no personal data stored).</small>
     </footer>
     <script>
-        // Robust ClustrMaps handling with cache-buster and debug logging
+        // Robust ClustrMaps handling with debug logging
         (function() {
-            const wrapper = document.getElementById('flag-counter-wrapper');
-            const img = document.getElementById('clustrmaps-img');
-            const fallback = document.getElementById('flag-counter-fallback');
+            const wrapper = document.getElementById('visitor-counter-wrapper');
+            const fallback = document.getElementById('visitor-counter-fallback');
 
-            // Add cache-buster to ensure fresh image load
-            const cacheBuster = new Date().getTime();
-            img.src = img.src + '&cb=' + cacheBuster;
+            // Check for ClustrMaps script load
+            const checkClustrMaps = setInterval(() => {
+                const clustrmaps = document.getElementById('clustrmaps');
+                if (clustrmaps && document.querySelector('#clustrmaps + img')) {
+                    const img = document.querySelector('#clustrmaps + img');
+                    console.log('ClustrMaps: Script loaded, image found, src:', img.src);
 
-            // Log for debugging
-            console.log('ClustrMaps: Initializing with URL:', img.src);
+                    // Handle image load
+                    function showCounter() {
+                        console.log('ClustrMaps: Image loaded successfully, width:', img.naturalWidth);
+                        wrapper.style.display = 'inline-block';
+                        fallback.style.display = 'none';
+                    }
 
-            // Handle image load (including cached images)
-            function showCounter() {
-                console.log('ClustrMaps: Image loaded successfully, width:', img.naturalWidth);
-                wrapper.style.display = 'inline-block';
-                fallback.style.display = 'none';
-            }
-
-            // Check if image is already loaded (cached)
-            if (img.complete && img.naturalWidth !== 0) {
-                console.log('ClustrMaps: Image already loaded (cached), width:', img.naturalWidth);
-                showCounter();
-            } else {
-                // Handle successful load
-                img.addEventListener('load', function() {
-                    showCounter();
-                }, { once: true });
-
-                // Handle errors (e.g., ad blockers, network issues)
-                img.addEventListener('error', function() {
-                    console.log('ClustrMaps: Image failed to load (blocked or error)');
+                    // Check if image is already loaded
+                    if (img.complete && img.naturalWidth !== 0) {
+                        showCounter();
+                    } else {
+                        img.addEventListener('load', showCounter, { once: true });
+                        img.addEventListener('error', () => {
+                            console.log('ClustrMaps: Image failed to load (blocked or error)');
+                            wrapper.style.display = 'none';
+                            fallback.style.display = 'block';
+                        }, { once: true });
+                    }
+                    clearInterval(checkClustrMaps);
+                } else if (document.readyState === 'complete') {
+                    console.log('ClustrMaps: Script failed to load or no image generated');
                     wrapper.style.display = 'none';
                     fallback.style.display = 'block';
-                }, { once: true });
-            }
+                    clearInterval(checkClustrMaps);
+                }
+            }, 100);
+
+            // Timeout after 5 seconds
+            setTimeout(() => {
+                if (wrapper.style.display !== 'inline-block') {
+                    console.log('ClustrMaps: Timeout - assuming load failure');
+                    wrapper.style.display = 'none';
+                    fallback.style.display = 'block';
+                    clearInterval(checkClustrMaps);
+                }
+            }, 5000);
         })();
     </script>
 </body>
