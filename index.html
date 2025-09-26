@@ -289,56 +289,5 @@
         © 2025 Somdeb Bandopadhyay · All Rights Reserved<br>
         <small>Visitor tracking via ClustrMaps (IP geolocation only; no personal data stored).</small>
     </footer>
-    <script>
-        // Robust ClustrMaps handling with debug logging
-        (function() {
-            const wrapper = document.getElementById('visitor-counter-wrapper');
-            const fallback = document.getElementById('visitor-counter-fallback');
-
-            // Check for ClustrMaps script load
-            const checkClustrMaps = setInterval(() => {
-                const clustrmaps = document.getElementById('clustrmaps');
-                if (clustrmaps && document.querySelector('#clustrmaps + img')) {
-                    const img = document.querySelector('#clustrmaps + img');
-                    console.log('ClustrMaps: Script loaded, image found, src:', img.src);
-
-                    // Handle image load
-                    function showCounter() {
-                        console.log('ClustrMaps: Image loaded successfully, width:', img.naturalWidth);
-                        wrapper.style.display = 'inline-block';
-                        fallback.style.display = 'none';
-                    }
-
-                    // Check if image is already loaded
-                    if (img.complete && img.naturalWidth !== 0) {
-                        showCounter();
-                    } else {
-                        img.addEventListener('load', showCounter, { once: true });
-                        img.addEventListener('error', () => {
-                            console.log('ClustrMaps: Image failed to load (blocked or error)');
-                            wrapper.style.display = 'none';
-                            fallback.style.display = 'block';
-                        }, { once: true });
-                    }
-                    clearInterval(checkClustrMaps);
-                } else if (document.readyState === 'complete') {
-                    console.log('ClustrMaps: Script failed to load or no image generated');
-                    wrapper.style.display = 'none';
-                    fallback.style.display = 'block';
-                    clearInterval(checkClustrMaps);
-                }
-            }, 100);
-
-            // Timeout after 5 seconds
-            setTimeout(() => {
-                if (wrapper.style.display !== 'inline-block') {
-                    console.log('ClustrMaps: Timeout - assuming load failure');
-                    wrapper.style.display = 'none';
-                    fallback.style.display = 'block';
-                    clearInterval(checkClustrMaps);
-                }
-            }, 5000);
-        })();
-    </script>
 </body>
 </html>
